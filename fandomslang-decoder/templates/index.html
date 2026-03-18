@@ -1,0 +1,165 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <section class="card card-form">
+    <h2 class="section-title">Decode fandom text</h2>
+    <form method="post" action="{{ url_for('decode') }}" class="decode-form">
+      <div class="form-row">
+        <label for="fandom" class="field-label">Fandom preset</label>
+        <select id="fandom" name="fandom" class="field-input">
+          {% for key, preset_obj in PRESETS.items() %}
+            <option value="{{ key }}" {% if key == fandom_key %}selected{% endif %}>
+              {{ preset_obj.label }}
+            </option>
+          {% endfor %}
+        </select>
+        <p class="field-help">
+          {{ preset.description }}
+        </p>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-column">
+          <label for="text1" class="field-label">Text 1</label>
+          <textarea
+            id="text1"
+            name="text1"
+            rows="4"
+            class="field-input"
+            placeholder="Example: This arc slaps, mid-tier villain with insane rizz."
+          >{{ (original_inputs[0] or "")|e }}</textarea>
+        </div>
+        <div class="form-column">
+          <label for="text2" class="field-label">Text 2 (optional)</label>
+          <textarea
+            id="text2"
+            name="text2"
+            rows="4"
+            class="field-input"
+            placeholder="Optional second message, e.g. from a Discord thread."
+          >{{ (original_inputs[1] or "")|e }}</textarea>
+        </div>
+        <div class="form-column">
+          <label for="text3" class="field-label">Text 3 (optional)</label>
+          <textarea
+            id="text3"
+            name="text3"
+            rows="4"
+            class="field-input"
+            placeholder="Optional third message."
+          >{{ (original_inputs[2] or "")|e }}</textarea>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn-primary">Decode</button>
+        <p class="field-help">
+          Batch mode: up to 3 short texts at once.
+        </p>
+      </div>
+    </form>
+
+    {% if error_message %}
+      <div class="alert alert-error">
+        {{ error_message }}
+      </div>
+    {% endif %}
+  </section>
+
+  <section class="results-layout">
+    <div class="results-column">
+      <h2 class="section-title">Decoded results</h2>
+
+      {% if decoded_items %}
+        <div
+          id="decodeResults"
+          data-fandom="{{ fandom_key }}"
+        >
+          {% for item in decoded_items %}
+            <article
+              class="card card-result"
+              data-original="{{ item.original|e }}"
+              data-decoded="{{ item.decoded|e }}"
+            >
+              <header class="card-result-header">
+                <h3>Text {{ loop.index }}</h3>
+                <p class="result-fandom">
+                  Preset: {{ preset.label }}
+                </p>
+              </header>
+
+              <div class="result-block">
+                <h4 class="result-label">Original</h4>
+                <p class="result-original">
+                  {{ item.original }}
+                </p>
+              </div>
+
+              <div class="result-block">
+                <h4 class="result-label">Plain English</h4>
+                <p class="result-decoded">
+                  {{ item.decoded }}
+                </p>
+              </div>
+
+              {% if item.glossary %}
+                <div class="result-block">
+                  <h4 class="result-label">Glossary</h4>
+                  <ul class="glossary-list">
+                    {% for g in item.glossary %}
+                      <li>
+                        <span
+                          class="glossary-term"
+                          title="{{ g.definition }}"
+                        >
+                          {{ g.term }}
+                        </span>
+                        <span class="glossary-separator">:</span>
+                        <span class="glossary-definition">
+                          {{ g.definition }}
+                        </span>
+                      </li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              {% endif %}
+
+              <div class="result-actions">
+                <button
+                  type="button"
+                  class="btn-secondary copy-decoded"
+                  data-copy-kind="decoded"
+                >
+                  Copy decoded text
+                </button>
+                <button
+                  type="button"
+                  class="btn-secondary copy-share"
+                  data-copy-kind="share"
+                >
+                  Copy share blurb
+                </button>
+              </div>
+            </article>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p class="muted">
+          Paste some fandom text above and hit Decode to see results here.
+        </p>
+      {% endif %}
+    </div>
+
+    <aside class="history-column">
+      <h2 class="section-title">Recent decodes (this session)</h2>
+      <p class="field-help">
+        Stored only in your browser using local history. The last five decodes
+        will appear here for quick reference.
+      </p>
+      <div id="historyList" class="history-list">
+        <!-- Filled by main.js using localStorage -->
+      </div>
+    </aside>
+  </section>
+{% endblock %}
+

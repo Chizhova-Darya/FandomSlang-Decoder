@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FandomSlang Decoder</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/styles.css') }}"
+    />
+    <script
+      src="{{ url_for('static', filename='js/main.js') }}"
+      defer
+    ></script>
+  </head>
+  <body>
+    <div class="page">
+      <header class="header">
+        <div class="header-main">
+          <h1 class="app-title">FandomSlang Decoder</h1>
+          <p class="app-tagline">
+            Translate niche fandom slang, memes, and ship names into plain
+            English for newcomers.
+          </p>
+        </div>
+        <div class="header-controls">
+          <label class="toggle">
+            <input type="checkbox" id="darkModeToggle" />
+            <span class="toggle-label">Dark mode</span>
+          </label>
+        </div>
+      </header>
+
+      <main class="main">
+        {% block content %}{% endblock %}
+      </main>
+
+      <footer class="footer">
+        <p>
+          Built with Python, Flask, and the OpenAI API. Session-only history is
+          stored in your browser.
+        </p>
+      </footer>
+    </div>
+  </body>
+</html>
+
