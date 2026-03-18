@@ -7,7 +7,7 @@ It is aimed at casual viewers entering anime / TV / games fandoms and at content
 
 ## Features
 
-- **Fandom presets**: choose from General Internet, Anime/Manga, K‑pop, Marvel/MCU, Star Wars, Gaming, and Western TV/Streaming. Each preset guides the model toward relevant slang (e.g., `isekai`, `stan`, `retcon`, `nerf`).
+- **Fandom presets**: choose from General Internet, Anime/Manga, K‑pop, Marvel/MCU, Star Wars, Gaming, and Western TV/Streaming. Each preset guides the model toward relevant slang (e.g., `isekai`, `stan`).
 - **Batch mode**: paste up to **three short texts** at once (e.g., a Discord snippet), and decode them together.
 - **Plain‑English decoding**: each text is rewritten in accessible English while keeping the original sentiment where possible.
 - **Inline glossary**: slang and references are listed under each result, with hover tooltips on each term (`title` attribute) for quick lookup.
